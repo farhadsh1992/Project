@@ -146,6 +146,7 @@ def plot_training_summary(training_summary, time_summary=None):
         plt.legend(('Train set', 'Validation set'))
         plt.show()
         
+
 def estimate_cpu(num,start,lenghtdf):
     numb=num+1
     stop = pendulum.now()
@@ -161,8 +162,7 @@ def estimate_cpu(num,start,lenghtdf):
            '/'+str(lenghtdf)+"] _ [ time:" + str(dift1) +
            "] _ ["+" Remain:" + str(estimatTime)+
            "] _ ["+" Memory:"+str(memoryUse)+"% ] _ ["+" CPU:"+str(cpuUse)+"% ]")
-    sys.stdout.write('\r'+ run)
-    
+    sys.stdout.write('\r'+ run)    
 
 class TimeSummary(Callback):
     def on_train_begin(self, logs={}):
@@ -177,3 +177,26 @@ class TimeSummary(Callback):
 
     def on_epoch_end(self, batch, logs={}):
         self.epoch_times.append(time.process_time() - self.epoch_time_start)
+        
+        
+class Estimate_Deeptime(Callback):
+    def on_train_begin(self, logs={}):
+        self.n=1
+        self.start_time = pendulum.now()
+    def on_epoch_begin(self, epochs, logs={}):
+        
+        end_time = abs(self.start_time - pendulum.now())*1
+        estimatTime = abs(abs(dift1*epochs/n)-dift1)
+        self.n+=1
+        
+        memoryUse = psutil.virtual_memory().percent
+        cpuUse = psutil.cpu_percent(interval=1, percpu=True)
+        
+        sys.stdout.write('\r'+"["+n+"/"+epochs+"][Time: "+ end_time+']#[Remain :'+estimatTime+
+        "][Memory: "+memoryUse+"][Cpu: "+cpuUse)
+        
+        
+        
+        
+        
+        
